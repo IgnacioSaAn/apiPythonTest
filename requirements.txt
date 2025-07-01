@@ -2,3 +2,4 @@ fastapi>=0.100
 uvicorn>=0.22
 sqlalchemy>=1.4
 pymysql>=1.0
+psycopg2-binary>=2.9
