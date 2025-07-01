@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
-from . import crud, models
+from . import crud, models, schemas
 from .database import SessionLocal, engine
 
 # crear tablas si no existen
@@ -29,3 +29,14 @@ def leer_usuarios(db: Session = Depends(get_db)):
         }
         for u in usuarios
     ]
+
+@app.post("/usuarios")
+def crear_usuario(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)):
+    nuevo_usuario = crud.crear_usuario(db, usuario)
+    return {
+        "id": nuevo_usuario.id,
+        "nombre": nuevo_usuario.nombre,
+        "email": nuevo_usuario.email,
+        "rol": nuevo_usuario.rol,
+        "compania": nuevo_usuario.compania
+    }
