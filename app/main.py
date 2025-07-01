@@ -2,12 +2,19 @@ from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from . import crud, models, schemas
 from .database import SessionLocal, engine
+from fastapi.middleware.cors import CORSMiddleware
 
 # crear tablas si no existen
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # o restringir a tu dominio
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # dependencia para obtener sesión de DB
 def get_db():
     db = SessionLocal()
