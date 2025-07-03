@@ -95,3 +95,16 @@ def crear_trazabilidad(traz: schemas.TrazabilidadCreate, db: Session = Depends(g
         "usuario_id": nueva_traza.usuario_id,
         "accion": nueva_traza.accion
     }
+
+@app.get("/trazabilidad/manual/{manual_id}")
+def leer_trazabilidad_por_manual(manual_id: int, db: Session = Depends(get_db)):
+    trazas = crud.get_trazabilidad_por_manual(db, manual_id)
+    return [
+        {
+            "id": t.id,
+            "numero_manual": t.numero_manual,
+            "usuario_id": t.usuario_id,
+            "accion": t.accion
+        }
+        for t in trazas
+    ]

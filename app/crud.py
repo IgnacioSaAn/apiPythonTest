@@ -44,3 +44,6 @@ def create_trazabilidad(db: Session, traz):
     db.commit()
     db.refresh(db_traz)
     return db_traz
+
+def get_trazabilidad_por_manual(db: Session, manual_id: int):
+    return db.query(models.Trazabilidad).filter(models.Trazabilidad.numero_manual == manual_id).all()
