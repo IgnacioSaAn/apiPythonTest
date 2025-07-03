@@ -47,3 +47,51 @@ def crear_usuario(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db))
         "rol": nuevo_usuario.rol,
         "compania": nuevo_usuario.compania
     }
+
+@app.get("/manuales")
+def leer_manuales(db: Session = Depends(get_db)):
+    manuales = crud.get_manuales(db)
+    return [
+        {
+            "id": m.id,
+            "titulo": m.titulo,
+            "historia": m.historia,
+            "tipografia": m.tipografia,
+            "colores": m.colores
+        }
+        for m in manuales
+    ]
+
+@app.post("/manuales")
+def crear_manual(manual: schemas.ManualMarcaCreate, db: Session = Depends(get_db)):
+    nuevo_manual = crud.create_manual(db, manual)
+    return {
+        "id": nuevo_manual.id,
+        "titulo": nuevo_manual.titulo,
+        "historia": nuevo_manual.historia,
+        "tipografia": nuevo_manual.tipografia,
+        "colores": nuevo_manual.colores
+    }
+
+@app.get("/trazabilidad")
+def leer_trazabilidades(db: Session = Depends(get_db)):
+    trazas = crud.get_trazabilidades(db)
+    return [
+        {
+            "id": t.id,
+            "numero_manual": t.numero_manual,
+            "usuario_id": t.usuario_id,
+            "accion": t.accion
+        }
+        for t in trazas
+    ]
+
+@app.post("/trazabilidad")
+def crear_trazabilidad(traz: schemas.TrazabilidadCreate, db: Session = Depends(get_db)):
+    nueva_traza = crud.create_trazabilidad(db, traz)
+    return {
+        "id": nueva_traza.id,
+        "numero_manual": nueva_traza.numero_manual,
+        "usuario_id": nueva_traza.usuario_id,
+        "accion": nueva_traza.accion
+    }
